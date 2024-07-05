@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     document.getElementById("answer-box").addEventListener("keydown", function(event) {
-        if (event.key ==="Enter") {
+        if (event.key === "Enter") {
             checkAnswer();
         }
-    })
+    });
 
     runGame("addition");
 
@@ -34,7 +34,9 @@ function runGame(gameType) {
     document.getElementById("answer-box").value = "";
     document.getElementById("answer-box").focus();
 
-    // Creates two random numbers between 1 and 25
+    // Generate two random numbers between 1 and 25
+	// Math.floor rounds down to the whole number
+	// Math.random generates random numbers
     let num1 = Math.floor(Math.random() * 25) + 1;
     let num2 = Math.floor(Math.random() * 25) + 1;
 
@@ -44,6 +46,10 @@ function runGame(gameType) {
         displayMultiplyQuestion(num1, num2);
     } else if (gameType === "substract") {
         displaySubtractQuestion(num1, num2);
+    } else if (gameType === "division") {
+        let operand1 = num1 * num2; // Ensure the first operand is divisible by second operand
+        let operand2 = num1;
+        displayDivisionQuestion(operand1, operand2);
     } else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}. Aborting!`;
@@ -86,7 +92,9 @@ function calculateCorrectAnswer() {
     } else if (operator === "x") {
         return [operand1 * operand2, "multiply"];
     } else if (operator === "-") {
-        return [operand1 - operand2, "substract"]; 
+        return [operand1 - operand2, "substract"];
+    } else if (operator === "/") {
+        return [operand1 / operand2, "division"]; 
     } else {
         alert(`Unimplmeneted operator: ${operator}`);
         throw `Unimplmeneted operator: ${operator}. Aborting!`;
@@ -137,10 +145,10 @@ function displayMultiplyQuestion(operand1, operand2) {
     
 }
 
-function displayDivisionQuestion() {
+function displayDivisionQuestion(operand1, operand2) {
 
-    document.getElementById('operand1').textContent = operand1;
-    document.getElementById('operand2').textContent = operand2;
+    document.getElementById('operand1').textContent = operand1 > operand2 ? operand1 : operand2;
+    document.getElementById('operand2').textContent = operand1 > operand2 ? operand2 : operand1;
     document.getElementById('operator').textContent = "/";
 
 }
